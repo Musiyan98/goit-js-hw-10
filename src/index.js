@@ -1,4 +1,5 @@
 import './css/styles.css';
+import API from './RestAPI';
 import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
@@ -19,23 +20,14 @@ function onGetsCountries(e) {
   if (!searchCountryValue) {
     return;
   }
-  fetchCountries(searchCountryValue).then(renderResult).catch(rejectedResult);
+  API.fetchCountries(searchCountryValue)
+    .then(renderResult)
+    .catch(rejectedResult);
 }
 
 function clearOutputField() {
   listCountryEl.innerHTML = '';
   infoCountryEl.innerHTML = '';
-}
-
-function fetchCountries(name) {
-  return fetch(
-    `https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`
-  ).then(response => {
-    if (!response.ok) {
-      throw new Error(response.status);
-    }
-    return response.json();
-  });
 }
 
 function renderResult(result) {
